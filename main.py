@@ -8,7 +8,13 @@ class Game:
         self.screen = pygame.display.set_mode((0, 0), pygame.RESIZABLE)
         self.size = (self.screen.get_width(), self.screen.get_height())
         pygame.display.set_caption("The binding of isaac Four Souls")
-        info = pygame.display.Info()
+
+        # Ticks
+
+        self.clock = pygame.time.Clock()
+        self.fps = 120
+
+    def load_resources(self):
         self.bg = pygame.image.load("Resources/Images/table.png")
         self.bg = pygame.transform.scale(self.bg, self.size)
 
@@ -25,6 +31,9 @@ class Game:
 
             pygame.display.flip()
             self.screen.blit(self.bg, (0,0))
+
+
+            self.clock.tick(self.fps)
 
 
 if __name__ == "__main__":
