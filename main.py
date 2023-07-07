@@ -1,5 +1,6 @@
 import pygame
 from Assets.Cards import PlayerCard
+from Assets.Player.Life import Life
 
 class Game:
     def __init__(self) -> None:
@@ -7,16 +8,19 @@ class Game:
         self.inGame = False
         self.screen = pygame.display.set_mode((0, 0), pygame.RESIZABLE)
         self.size = (self.screen.get_width(), self.screen.get_height())
+        self.original = (1360, 768)
+
+        self.diferencial = tuple(((a - b) // 2) for a, b in zip(self.size, self.original))
+
         pygame.display.set_caption("The binding of isaac Four Souls")
 
         # Ticks
-
         self.clock = pygame.time.Clock()
         self.fps = 120
 
         # players
-        self.rojo = PlayerCard(690, 559, 60, 96, (255, 0, 0) , False)
-        self.amarillo = PlayerCard(1290, 114, 60, 96, (255, 255, 255) , True)
+        self.rojo = PlayerCard(690 + self.diferencial[0], 559 + self.diferencial[1], 60, 96, (255, 0, 0) , False)
+        self.amarillo = PlayerCard(1290 + self.diferencial[0], 114 + self.diferencial[1], 60, 96, (255, 255, 255) , True)
         self.azul = PlayerCard(11, 559, 60, 96, (0, 0, 255) , False)
         self.verde = PlayerCard(611, 114, 60, 96, (0, 255, 0) , True)
 
@@ -28,6 +32,7 @@ class Game:
         self.bg = pygame.transform.scale(self.bg, self.size)
         self.monsters = pygame.image.load("Resources/Cards/monster_card_back.png")
         self.monsters = pygame.transform.scale(self.monsters, (60, 96))
+
         
         
 
@@ -62,7 +67,7 @@ class Game:
             # screen
             pygame.display.flip()
             self.screen.blit(self.bg, (0,0))
-            self.screen.blit(self.monsters, (1231,336))
+            self.screen.blit(self.monsters, (1232 + self.diferencial[0],336))
 
             
             
