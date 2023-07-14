@@ -1,6 +1,9 @@
 import pygame
+import threading
+
 from Assets.Cards import PlayerCard
-from Assets.Player.Life import Life
+from Assets.Life import Life
+from Assets.Dice import Dice
 
 class Game:
     def __init__(self) -> None:
@@ -26,6 +29,10 @@ class Game:
 
         # config
         self.players = []
+        self.dice_face = 0
+        # System
+        self.dice = Dice((self.size[0]//2, self.size[1]//2))
+
 
     def load_resources(self):
         self.bg = pygame.image.load("Resources/Images/table.png")
@@ -33,7 +40,7 @@ class Game:
         self.monsters = pygame.image.load("Resources/Cards/monster_card_back.png")
         self.monsters = pygame.transform.scale(self.monsters, (60, 96))
 
-        
+        self.dice.load_resources()
         
 
     def run(self):
@@ -54,6 +61,27 @@ class Game:
                         self.azul.add_player_card()
                     if event.key == pygame.K_f:
                         self.verde.add_player_card()
+                        
+                    if event.key == pygame.K_r:
+                        self.dice.show = not self.dice.show
+                        
+                    if event.key == pygame.K_1:
+                        self.dice_face = 0
+                    if event.key == pygame.K_2:
+                        
+                        self.dice_face = 1
+                    if event.key == pygame.K_3:
+                        
+                        self.dice_face = 2
+                    if event.key == pygame.K_4:
+                        
+                        self.dice_face = 3
+                    if event.key == pygame.K_5:
+                        
+                        self.dice_face = 4
+                    if event.key == pygame.K_6:
+                        
+                        self.dice_face = 5
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_q]:
@@ -62,21 +90,23 @@ class Game:
             # if keys[pygame.K_a]:
                 
 
-            print(pygame.mouse.get_pos())
+            # print(pygame.mouse.get_pos())
 
             # screen
             pygame.display.flip()
             self.screen.blit(self.bg, (0,0))
             self.screen.blit(self.monsters, (1232 + self.diferencial[0],336))
-
-            
             
             self.rojo.draw(self.screen)
             self.amarillo.draw(self.screen)
             self.azul.draw(self.screen)
             self.verde.draw(self.screen)
 
-
+            if self.dice.show:     
+                if not self.dice.playing:
+                    threading.Thread(target=self.dice.draw_dice_anim).start()
+                else:
+                    self.dice.draw_dice(self.screen)
             # ticks
             self.clock.tick(self.fps)
 
