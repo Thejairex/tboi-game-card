@@ -1,6 +1,7 @@
 import random
 import pygame
 import time
+import pyganim
 
 
 class Dice:
@@ -11,6 +12,8 @@ class Dice:
         self.show = False
         self.playing = False
         
+        self.anim = pyganim.PygAnimation
+
     def load_resources(self):
         
         self.image = pygame.image.load("Resources/Images/dice.png") 
@@ -21,11 +24,10 @@ class Dice:
         cara2 = self.image.subsurface(pygame.Rect(207,204,201,200))
         cara1 = self.image.subsurface(pygame.Rect(415,204,201,200))
         
-        self.faces = [cara1,cara2, cara3, cara4, cara5, cara6]
-        self.anim = self.faces + self.faces
-        self.rect = cara5.get_rect()
-        
-        self.rect.center = self.center
+        self.anim = pyganim.PygAnimation([(cara1, 100), (cara2, 100), (cara3, 100), (cara4, 100), (cara5, 100), (cara6, 100)])
+
+        self.anim.play()
+        self.start_anim = pygame.time.get_ticks()
     def reroll(self):
         random.shuffle(self.faces)
         
@@ -34,13 +36,3 @@ class Dice:
         
     def draw_dice(self, screen):
         screen.blit(self.anim[self.current_face], self.rect)
-    
-    def draw_dice_anim(self):   
-        random.shuffle(self.anim)
-        self.playing = True
-        for face in range(0,len(self.anim)):
-            self.current_face = face
-            time.sleep(0.3)
-            
-        time.sleep(5)
-        self.playing = False
