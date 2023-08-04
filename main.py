@@ -102,11 +102,13 @@ class Game:
             self.azul.draw(self.screen)
             self.verde.draw(self.screen)
 
-            if self.dice.show:     
-                if not self.dice.playing:
-                    threading.Thread(target=self.dice.draw_dice_anim).start()
-                else:
-                    self.dice.draw_dice(self.screen)
+            if self.dice.show:
+                self.dice.anim.play()
+                self.dice.draw_dice(self.screen)
+
+            else:
+                if not self.dice.anim.isFinished():
+                    self.dice.anim.stop()
             # ticks
             self.clock.tick(self.fps)
 
