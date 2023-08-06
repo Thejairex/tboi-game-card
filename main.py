@@ -57,40 +57,26 @@ class Game:
                         
                     if event.key == pygame.K_s:
                         self.amarillo.add_player_card()
+                        
                     if event.key == pygame.K_d:
                         self.azul.add_player_card()
+                        
                     if event.key == pygame.K_f:
                         self.verde.add_player_card()
+                        
                         
                     if event.key == pygame.K_r:
                         self.dice.show = not self.dice.show
                         
-                    if event.key == pygame.K_1:
-                        self.dice_face = 0
-                    if event.key == pygame.K_2:
+                    if event.key == pygame.K_w:
+                        self.dice.result(self.screen)
                         
-                        self.dice_face = 1
-                    if event.key == pygame.K_3:
-                        
-                        self.dice_face = 2
-                    if event.key == pygame.K_4:
-                        
-                        self.dice_face = 3
-                    if event.key == pygame.K_5:
-                        
-                        self.dice_face = 4
-                    if event.key == pygame.K_6:
-                        
-                        self.dice_face = 5
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_q]:
                 self.inGame = False
                 
-            # if keys[pygame.K_a]:
-                
 
-            # print(pygame.mouse.get_pos())
 
             # screen
             pygame.display.flip()
@@ -103,13 +89,10 @@ class Game:
             self.verde.draw(self.screen)
 
             if self.dice.show:
-                self.dice.anim.play()
                 self.dice.draw_dice(self.screen)
+                if not self.dice.anim_playing:
+                    self.dice.result(self.screen)
 
-            else:
-                if not self.dice.anim.isFinished():
-                    self.dice.anim.stop()
-            # ticks
             self.clock.tick(self.fps)
 
 
